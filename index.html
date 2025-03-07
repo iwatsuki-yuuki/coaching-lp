@@ -487,10 +487,8 @@
             
                   <!-- ここが重要：action="GASのURL" method="POST" -->
                   <!-- 例: action="https://script.google.com/macros/s/XXXXXXXX/exec" -->
-                  <form 
-                    action="https://script.google.com/macros/s/AKfycbzrmFA-VGFE72hM2JXjAuJ-WSBMFJjXBJ7WHy8Id6flYl6hsE1fky3RF-6J1vavXBQe1g/exec"
-                    method="POST"
-                  >
+
+                  <form id="contact-form">
                     <label for="last-name">姓 <span class="required">必須</span></label>
                     <input type="text" id="last-name" name="lastName" required>
                     
@@ -509,8 +507,32 @@
                     <label for="message">お問い合わせ内容 <span class="required">必須</span></label>
                     <textarea id="message" name="message" required></textarea>
                     
-                    <button type="submit">送信</button>
+                    <button type="submit" id="submit-btn">送信</button>
                   </form>
+                  
+                  <script>
+                    document.getElementById("contact-form").addEventListener("submit", function(event) {
+                      event.preventDefault(); // デフォルトのフォーム送信を防ぐ
+                  
+                      var formData = new FormData(this); // フォームデータを取得
+                  
+                      fetch("https://script.google.com/macros/s/AKfycbzrmFA-VGFE72hM2JXjAuJ-WSBMFJjXBJ7WHy8Id6flYl6hsE1fky3RF-6J1vavXBQe1g/exec", {
+                        method: "POST",
+                        body: formData
+                      })
+                      .then(response => response.text()) // GAS のレスポンスを取得
+                      .then(data => {
+                        console.log("GASからのレスポンス:", data);
+                  
+                        // 送信後に自動で `thank.html` に移動
+                        window.location.href = "https://iwatsuki-yuuki.github.io/coaching-lp/thank.html";
+                      })
+                      .catch(error => {
+                        console.error("エラー:", error);
+                        alert("エラーが発生しました。");
+                      });
+                    });
+                  </script>
                 </div>
               </section>
             
