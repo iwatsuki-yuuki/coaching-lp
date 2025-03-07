@@ -512,26 +512,30 @@
                   
                   <script>
                     document.getElementById("contact-form").addEventListener("submit", function(event) {
-                      event.preventDefault(); // デフォルトのフォーム送信を防ぐ
-                  
-                      var formData = new FormData(this); // フォームデータを取得
-                  
-                      fetch("https://script.google.com/macros/s/AKfycbwaT9xo3Ym2q8ccTYjI7WswFSyyYCA_NYIB2t_M8FnHE87dwSWj6ChVr1_vA0B5JcLjYQ/exec", {
-                        method: "POST",
-                        body: formData
-                      })
-                      .then(response => response.text()) // GAS のレスポンスを取得
-                      .then(data => {
-                        console.log("GASからのレスポンス:", data);
-                  
-                        // 送信後に自動で `thank.html` に移動
-                        window.location.href = "https://iwatsuki-yuuki.github.io/coaching-lp/thank.html";
-                      })
-                      .catch(error => {
-                        console.error("エラー:", error);
-                        alert("エラーが発生しました。");
-                      });
-                    });
+  event.preventDefault(); // デフォルトのフォーム送信を防ぐ
+
+  var formData = new FormData(this); // フォームデータを取得
+
+  fetch("https://script.google.com/macros/s/AKfycbwaT9xo3Ym2q8ccTYjI7WswFSyyYCA_NYIB2t_M8FnHE87dwSWj6ChVr1_vA0B5JcLjYQ/exec", {
+    method: "POST",
+    body: formData
+  })
+  .then(response => response.text()) // GAS のレスポンスを取得
+  .then(data => {
+    console.log("GASからのレスポンス:", data);
+
+    // `thank.html` にリダイレクト
+    if (data.includes("success")) {
+      window.location.href = "https://iwatsuki-yuuki.github.io/coaching-lp/thank.html";
+    } else {
+      alert("送信に失敗しました。");
+    }
+  })
+  .catch(error => {
+    console.error("エラー:", error);
+    alert("エラーが発生しました。");
+  });
+});
                   </script>
                 </div>
               </section>
